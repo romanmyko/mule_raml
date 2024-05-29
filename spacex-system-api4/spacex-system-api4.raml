@@ -1,0 +1,66 @@
+#%RAML 1.0
+title: spacex-diy4
+version: v1
+
+annotationTypes:
+  authRequired:
+    type: boolean
+    description: Indicates if authentication is required for the endpoint
+
+traits:
+  common: !include traits/commonTraits.raml
+  standard-error-response: !include traits/errorResponse.raml
+
+types:
+  CapsulesAll: !include datatypes/capsulesAllDataType.raml
+  CapsulesOne: !include datatypes/capsulesOneDataType.raml
+  PayloadsAll: !include datatypes/payloadsAllDataType.raml
+  PayloadsOne: !include datatypes/payloadsOneDataType.raml
+  Error: !include datatypes/errorDataType.raml
+      
+/capsules:
+  get:
+    is: [ common, standard-error-response ]
+    (authRequired): false
+    description: Get All Capsules details.
+    responses:
+      200:
+        body:
+          application/json:
+            type: CapsulesAll[]
+            example: !include examples/capsulesAll.json
+  /{id}:
+    get:
+      is: [ common, standard-error-response  ]
+      (authRequired): false
+      description: Get Capsules details by ID.
+      responses:
+        200:
+          body:
+            application/json:
+              type: CapsulesOne
+              example: !include examples/capsulesOne.json
+
+/payloads:
+  get:
+    is: [ common, standard-error-response  ] 
+    (authRequired): false
+    description: Get All Payloads
+    responses:
+      200:
+        body:
+          application/json:
+            type: PayloadsAll[]
+            example: !include examples/payloadsAll.json
+  /{id}:
+    get:
+      is: [ common, standard-error-response  ] 
+      (authRequired): false
+      description: Get Payloads by ID.
+      responses:
+        200:
+          body:
+            application/json:
+              type: PayloadsOne
+              example: !include examples/payloadsOne.json
+   
